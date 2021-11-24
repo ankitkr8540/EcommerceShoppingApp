@@ -1,0 +1,22 @@
+{
+  "name": "ecommerceshoppingapp",
+  "version": "1.0.0",
+  "description": "MERN ecommerce shopping app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankitkr8540/EcommerceShoppingApp.git"
+  },
+  "author": "Ankit kumar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ankitkr8540/EcommerceShoppingApp/issues"
+  },
+  "homepage": "https://github.com/ankitkr8540/EcommerceShoppingApp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
