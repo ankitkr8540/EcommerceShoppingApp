@@ -33,11 +33,7 @@ const CartScreen = () => {
     navigate('/cart')
   }
   const checkOutHandler = () => {
-    if (!userInfo) {
-      navigate('/login')
-    } else {
-      navigate('/shipping')
-    }
+    navigate('/login?redirect=shipping')
   }
   return (
     <Row>
