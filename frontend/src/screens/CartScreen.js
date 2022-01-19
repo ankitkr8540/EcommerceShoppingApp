@@ -18,6 +18,9 @@ const CartScreen = () => {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty))
@@ -26,9 +29,15 @@ const CartScreen = () => {
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
+    //added this code to take URL from /cart/:id?qty={} to /cart so that on reloading of the page the deleted product won't come back
+    navigate('/cart')
   }
   const checkOutHandler = () => {
-    navigate('/login?redirect=shipping')
+    if (!userInfo) {
+      navigate('/login')
+    } else {
+      navigate('/shipping')
+    }
   }
   return (
     <Row>
