@@ -15,12 +15,11 @@ const LoginScreen = () => {
   const userLogin = useSelector((state) => state.userLogin)
   const { loading, error, userInfo } = userLogin
   const redirect = location.search ? location.search.split('=')[1] : '/'
-  console.log(redirect)
   const navigate = useNavigate()
 
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect)
+      navigate(`/${redirect}`)
     }
   }, [navigate, userInfo, redirect])
   const submitHandler = (e) => {
