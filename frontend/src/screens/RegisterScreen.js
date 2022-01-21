@@ -8,6 +8,7 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 
 const RegisterScreen = (location) => {
+  //fix the redirect issue as done in LoginScreen.js using useLocation
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
