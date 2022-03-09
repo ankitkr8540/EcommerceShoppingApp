@@ -19,7 +19,12 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate(`/${redirect}`)
+      if (redirect === 'shipping') {
+        navigate(`/${redirect}`)
+        console.log(redirect)
+      } else {
+        navigate(`${redirect}`)
+      }
     }
   }, [navigate, userInfo, redirect])
   const submitHandler = (e) => {

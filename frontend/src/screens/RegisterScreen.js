@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
@@ -7,8 +7,9 @@ import { register } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
-const RegisterScreen = (location) => {
+const RegisterScreen = () => {
   //fix the redirect issue as done in LoginScreen.js using useLocation
+  const location = useLocation()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -24,7 +25,11 @@ const RegisterScreen = (location) => {
 
   useEffect(() => {
     if (!(userInfo === undefined || userInfo.length === 0)) {
-      navigate(redirect)
+      if (redirect === 'shipping') {
+        navigate(`/${redirect}`)
+      } else {
+        navigate(`${redirect}`)
+      }
     }
   }, [navigate, userInfo, redirect])
   const submitHandler = (e) => {
