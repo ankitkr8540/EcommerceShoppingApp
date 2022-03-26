@@ -21,7 +21,6 @@ const LoginScreen = () => {
     if (userInfo) {
       if (redirect === 'shipping') {
         navigate(`/${redirect}`)
-        console.log(redirect)
       } else {
         navigate(`${redirect}`)
       }

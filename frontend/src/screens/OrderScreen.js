@@ -1,17 +1,42 @@
 import React, { useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Row, Col, ListGroup, Image, Button, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getOrderDetails } from '../actions/orderActions'
+import { getOrderDetails, payOrder } from '../actions/orderActions'
+import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { CART_RESET } from '../constants/cartConstants'
+
+function loadScript(src) {
+  return new Promise((resolve) => {
+    const script = document.createElement('script')
+    script.src = src
+    script.onload = () => {
+      resolve(true)
+    }
+    script.onerror = () => {
+      resolve(false)
+    }
+    document.body.appendChild(script)
+  })
+}
+
+const __DEV__ = document.domain === 'localhost'
 
 const OrderScreen = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
+
+  const orderPay = useSelector((state) => state.orderPay)
+  const { loading: loadingPay, success: successPay } = orderPay
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   if (!loading) {
     const addDecimals = (num) => {
@@ -24,11 +49,55 @@ const OrderScreen = () => {
   }
 
   useEffect(() => {
-    if (!order || order._id !== id) {
-      dispatch(getOrderDetails(id))
+    if (!userInfo) {
+      navigate('/login')
     }
-  }, [dispatch, order, id])
 
+    if (!order || successPay || order._id !== id) {
+      dispatch({ type: ORDER_PAY_RESET })
+      // dispatch({ type: ORDER_DELIVER_RESET })
+      dispatch(getOrderDetails(id))
+      if (successPay) {
+        dispatch({ type: CART_RESET })
+      }
+    }
+  }, [dispatch, navigate, order, id, userInfo, successPay])
+
+  async function displayRazorpay() {
+    const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
+
+    if (!res) {
+      alert('Razorpay SDK failed to load. Are you online?')
+      return
+    }
+
+    const options = {
+      key: __DEV__ ? 'rzp_test_xb1HbeuF1gXaLT' : 'PRODUCTION_KEY',
+      currency: 'INR',
+      amount: parseInt(order.totalPrice) * 100,
+      order_id: order.id,
+      name: 'Basta',
+      description: 'Thank you for nothing. Please give us some money',
+      handler: function (response) {
+        console.log(response)
+        dispatch(
+          payOrder(id, {
+            id: id,
+            status: response.razorpay_payment_id ? true : false,
+            update_time: Date.now(),
+            email_address: `${order.user.email}`,
+          })
+        )
+      },
+      prefill: {
+        name: order.user.name,
+        email: order.user.emails,
+        phone_number: '9899999999',
+      },
+    }
+    const paymentObject = new window.Razorpay(options)
+    await paymentObject.open()
+  }
   return loading ? (
     <Loader />
   ) : error ? (
@@ -139,6 +208,24 @@ const OrderScreen = () => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+              {!order.isPaid && (
+                <ListGroup.Item>
+                  {loadingPay ? (
+                    <Loader />
+                  ) : (
+                    <Row className='p-2'>
+                      <Button
+                        type='button'
+                        className='btn-block'
+                        disabled={order.isPaid}
+                        onClick={displayRazorpay}
+                      >
+                        Buy Now
+                      </Button>
+                    </Row>
+                  )}
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>

@@ -10,6 +10,7 @@ import {
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS,
 } from '../constants/orderConstants'
+import { logout } from './userActions'
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -39,9 +40,9 @@ export const createOrder = (order) => async (dispatch, getState) => {
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message
-    //   if (message === 'Not authorized, token failed') {
-    //     // dispatch(logout())
-    //   }
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout())
+    }
     dispatch({
       type: ORDER_CREATE_FAIL,
       payload: message,
@@ -61,6 +62,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 
     const config = {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
       },
     }
@@ -76,9 +78,9 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message
-    //   if (message === 'Not authorized, token failed') {
-    //     // dispatch(logout())
-    //   }
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout())
+    }
     dispatch({
       type: ORDER_DETAILS_FAIL,
       payload: message,
@@ -114,14 +116,15 @@ export const payOrder =
         type: ORDER_PAY_SUCCESS,
         payload: data,
       })
+      localStorage.setItem('cartItems', JSON.stringify([]))
     } catch (error) {
       const message =
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
-      //   if (message === 'Not authorized, token failed') {
-      //     // dispatch(logout())
-      //   }
+      if (message === 'Not authorized, token failed') {
+        dispatch(logout())
+      }
       dispatch({
         type: ORDER_PAY_FAIL,
         payload: message,
