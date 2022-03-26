@@ -16,8 +16,8 @@ const UserListScreen = () => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  //   const userDelete = useSelector((state) => state.userDelete)
-  //   const { success: successDelete } = userDelete
+  const userDelete = useSelector((state) => state.userDelete)
+  const { success: successDelete } = userDelete
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
@@ -25,12 +25,12 @@ const UserListScreen = () => {
     } else {
       navigate('/login')
     }
-  }, [dispatch, navigate, userInfo])
+  }, [dispatch, navigate, userInfo, successDelete])
 
   const deleteHandler = (id) => {
-    // if (window.confirm('Are you sure')) {
-    //   dispatch(deleteUser(id))
-    // }
+    if (window.confirm('Are you sure')) {
+      dispatch(deleteUser(id))
+    }
   }
 
   return (
@@ -73,6 +73,7 @@ const UserListScreen = () => {
                     </Button>
                   </Link>
                   <Button
+                    disabled={user.isAdmin}
                     variant='danger'
                     className='btn-sm'
                     onClick={() => deleteHandler(user._id)}
