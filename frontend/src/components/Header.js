@@ -19,6 +19,18 @@ const Header = () => {
     navigate('/profile')
   }
 
+  const userListHandler = () => {
+    navigate(`/admin/userlist`)
+  }
+
+  const productListHandler = () => {
+    navigate(`/admin/productlist`)
+  }
+
+  const orderListHandler = () => {
+    navigate(`/admin/orderlist`)
+  }
+
   return (
     <header>
       <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
@@ -45,6 +57,19 @@ const Header = () => {
                 <Nav.Link as={Link} to='/login'>
                   <i className='fas fa-user'></i> Sign In
                 </Nav.Link>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title='Admin' id='adminmenu'>
+                  <NavDropdown.Item onClick={userListHandler}>
+                    Users
+                  </NavDropdown.Item>
+                  <NavDropdown.Item onClick={productListHandler}>
+                    Products
+                  </NavDropdown.Item>
+                  <NavDropdown.Item onClick={orderListHandler}>
+                    Orders
+                  </NavDropdown.Item>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>
