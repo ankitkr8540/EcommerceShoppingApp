@@ -4,8 +4,8 @@ import { Row, Col, ListGroup, Image, Button, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getOrderDetails, payOrder } from '../actions/orderActions'
-import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
 import { CART_RESET } from '../constants/cartConstants'
 
 function loadScript(src) {
@@ -35,6 +35,9 @@ const OrderScreen = () => {
   const orderPay = useSelector((state) => state.orderPay)
   const { loading: loadingPay, success: successPay } = orderPay
 
+  const orderDeliver = useSelector((state) => state.orderDeliver)
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -53,15 +56,15 @@ const OrderScreen = () => {
       navigate('/login')
     }
 
-    if (!order || successPay || order._id !== id) {
+    if (!order || successPay || order._id !== id || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET })
-      // dispatch({ type: ORDER_DELIVER_RESET })
+      dispatch({ type: ORDER_DELIVER_RESET })
       dispatch(getOrderDetails(id))
       if (successPay) {
         dispatch({ type: CART_RESET })
       }
     }
-  }, [dispatch, navigate, order, id, userInfo, successPay])
+  }, [dispatch, navigate, order, id, userInfo, successPay, successDeliver])
 
   async function displayRazorpay() {
     const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
@@ -98,6 +101,12 @@ const OrderScreen = () => {
     const paymentObject = new window.Razorpay(options)
     await paymentObject.open()
   }
+
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order))
+  }
+
   return loading ? (
     <Loader />
   ) : error ? (
@@ -221,6 +230,24 @@ const OrderScreen = () => {
                         onClick={displayRazorpay}
                       >
                         Buy Now
+                      </Button>
+                    </Row>
+                  )}
+                </ListGroup.Item>
+              )}
+
+              {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                <ListGroup.Item>
+                  {loadingDeliver ? (
+                    <Loader />
+                  ) : (
+                    <Row className='p-2'>
+                      <Button
+                        type='button'
+                        className='btn-block'
+                        onClick={deliverHandler}
+                      >
+                        Mark as Delivered
                       </Button>
                     </Row>
                   )}
