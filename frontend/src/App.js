@@ -42,7 +42,9 @@ function App() {
             <Route path='/admin/productlist' element={<ProductListScreen />} />
             <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
             <Route path='/admin/orderlist' element={<OrderListScreen />} />
-            <Route path='/search/:keyword' element={<HomeScreen />} />
+            <Route path='/search/:keyword' element={<HomeScreen />} exact />
+            <Route path='/page/:pageNumber' element={<HomeScreen />} exact />
+            <Route path='/search/:keyword/page/:pageNumber' element={<HomeScreen />} exact />
 
           </Routes>
         </Container>
