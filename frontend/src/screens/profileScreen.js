@@ -14,7 +14,6 @@ const ProfileScreen = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
-  const [profileUpdated, setProfileUpdated] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -36,16 +35,10 @@ const ProfileScreen = () => {
     if (!userInfo) {
       navigate('/login')
     } else {
-      if (!user || !user.name) {
-        dispatch(getUserDetails('profile'))
-        return
-      }
-      if (success) {
+      if (!user || !user.name || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
         dispatch(listMyOrders())
-        setProfileUpdated(true)
-        return
       } else {
         setName(user.name)
         setEmail(user.email)
@@ -54,7 +47,6 @@ const ProfileScreen = () => {
   }, [dispatch, navigate, userInfo, user, success])
   const submitHandler = (e) => {
     e.preventDefault()
-    setProfileUpdated(false)
     if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
@@ -67,7 +59,7 @@ const ProfileScreen = () => {
       <Col md={3}>
         <h2>User Profile</h2>
         {message && <Message variant='danger'>{message}</Message>}
-        {profileUpdated && <Message variant='success'>Profile Updated</Message>}
+        {success && <Message variant='success'>Profile Updated</Message>}
         {error && <Message variant='danger'>{error}</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
