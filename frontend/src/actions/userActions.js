@@ -179,7 +179,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message
     if (message === 'Not authorized, token failed') {
-      // dispatch(logout())
+      dispatch(logout())
     }
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
