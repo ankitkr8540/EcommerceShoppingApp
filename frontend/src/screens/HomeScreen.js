@@ -9,7 +9,6 @@ import Message from '../components/Message'
 import { useParams } from 'react-router-dom'
 const HomeScreen = () => {
   const { keyword, pageNumber } = useParams()
-  // const pageNum = pageNumber || 1
   const dispatch = useDispatch()
 
   const productList = useSelector((state) => state.productList)
