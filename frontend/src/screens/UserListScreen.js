@@ -48,7 +48,7 @@ const UserListScreen = () => {
               <th>NAME</th>
               <th>EMAIL</th>
               <th>ADMIN</th>
-              <th></th>
+              <th>EDIT/DELETE</th>
             </tr>
           </thead>
           <tbody>
@@ -67,19 +67,19 @@ const UserListScreen = () => {
                   )}
                 </td>
                 <td>
-                  <Link to={`/admin/user/${user._id}/edit`}>
+                  {user.isAdmin && user._id === userInfo._id ? <h6> Welcome Admin! </h6> : (<><Link to={`/admin/user/${user._id}/edit`}>
                     <Button variant='light' className='btn-sm'>
                       <i className='fas fa-edit'></i>
                     </Button>
                   </Link>
-                  <Button
-                    disabled={user.isAdmin}
-                    variant='danger'
-                    className='btn-sm'
-                    onClick={() => deleteHandler(user._id)}
-                  >
-                    <i className='fas fa-trash'></i>
-                  </Button>
+                    <Button
+                      variant='danger'
+                      className='btn-sm'
+                      onClick={() => deleteHandler(user._id)}
+                    >
+                      <i className='fas fa-trash'></i>
+                    </Button>
+                  </>)}
                 </td>
               </tr>
             ))}
