@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
+import { CART_RESET } from '../constants/cartConstants'
+import { USER_DETAILS_RESET } from '../constants/userConstants'
+import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -39,8 +42,9 @@ const PlaceOrderScreen = ({ history }) => {
   useEffect(() => {
     if (success) {
       navigate(`/order/${order._id}`)
-      // dispatch({ type: USER_DETAILS_FAIL })
-      // dispatch({ type: ORDER_CREATE_RESET })
+      dispatch({ type: CART_RESET })
+      dispatch({ type: USER_DETAILS_RESET })
+      dispatch({ type: ORDER_CREATE_RESET })
     }
     // eslint-disable-next-line
   }, [navigate, success])
