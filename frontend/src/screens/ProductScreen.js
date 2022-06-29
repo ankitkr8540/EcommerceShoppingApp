@@ -8,7 +8,7 @@ import { listProductDetails, createProductReview } from '../actions/productActio
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productsConstants'
-import Meta from '../components/Meta'
+import MetaHeader from '../components/Meta'
 
 const ProductScreen = () => {
   let { id } = useParams()
@@ -68,7 +68,7 @@ const ProductScreen = () => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          <Meta title={product.name} />
+          <MetaHeader title={product.name} />
           <Row>
             <Col md={6}>
               <Image src={product.image} alt={product.name} fluid />
