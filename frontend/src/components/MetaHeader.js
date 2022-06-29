@@ -12,7 +12,7 @@ const MetaHeader = ({ title, description, keywords }) => {
 }
 
 MetaHeader.defaultProps = {
-    title: 'Welcome To ProShop',
+    title: 'Welcome To Basta',
     description: 'We sell the best products for cheap',
     keywords: 'electronics, buy electronics, cheap electroincs',
 }
