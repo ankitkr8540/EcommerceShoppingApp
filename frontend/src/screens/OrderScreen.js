@@ -7,7 +7,8 @@ import Loader from '../components/Loader'
 import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
 import { CART_RESET } from '../constants/cartConstants'
-
+import dotenv from 'dotenv'
+dotenv.config()
 function loadScript(src) {
   return new Promise((resolve) => {
     const script = document.createElement('script')
@@ -75,7 +76,7 @@ const OrderScreen = () => {
     }
 
     const options = {
-      key: __DEV__ ? `${process.env.RAZORPAY_KEY}` : `${process.env.RAZORPAY_KEY}`,
+      key: __DEV__ ? 'rzp_test_xb1HbeuF1gXaLT' : 'rzp_test_xb1HbeuF1gXaLT',
       currency: 'INR',
       amount: parseInt(order.totalPrice) * 100,
       order_id: order.id,
