@@ -75,7 +75,7 @@ const OrderScreen = () => {
     }
 
     const options = {
-      key: __DEV__ ? 'rzp_test_xb1HbeuF1gXaLT' : 'PRODUCTION_KEY',
+      key: __DEV__ ? `${process.env.RAZORPAY_KEY}` : `${process.env.RAZORPAY_KEY}`,
       currency: 'INR',
       amount: parseInt(order.totalPrice) * 100,
       order_id: order.id,
