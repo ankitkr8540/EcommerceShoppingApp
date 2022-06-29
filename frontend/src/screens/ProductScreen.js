@@ -8,7 +8,7 @@ import { listProductDetails, createProductReview } from '../actions/productActio
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productsConstants'
-import MetaHeader from '../components/Meta'
+import MetaHeader from '../components/MetaHeader'
 
 const ProductScreen = () => {
   let { id } = useParams()

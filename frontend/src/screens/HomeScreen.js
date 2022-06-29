@@ -8,7 +8,7 @@ import Paginate from '../components/Paginate'
 import Message from '../components/Message'
 import { Link, useParams } from 'react-router-dom'
 import ProductCarousel from '../components/ProductCaraousel'
-import MetaHeader from '../components/Meta'
+import MetaHeader from '../components/MetaHeader'
 const HomeScreen = () => {
   const { keyword, pageNumber } = useParams()
   const dispatch = useDispatch()
