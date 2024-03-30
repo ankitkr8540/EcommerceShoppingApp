@@ -218,9 +218,9 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
 export const listTopProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_TOP_REQUEST })
-
+    console.log('listTopProducts')
     const { data } = await axios.get(`/api/products/top`)
-
+    console.log(data)
     dispatch({
       type: PRODUCT_TOP_SUCCESS,
       payload: data,
