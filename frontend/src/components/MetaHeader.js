@@ -5,6 +5,7 @@ const MetaHeader = ({ title, description, keywords }) => {
     return (
         <Helmet>
             <title>{title}</title>
+            <icon href='/images/airpods.jpg' />
             <meta name='description' content={description} />
             <meta name='keyword' content={keywords} />
         </Helmet>
@@ -12,7 +13,7 @@ const MetaHeader = ({ title, description, keywords }) => {
 }
 
 MetaHeader.defaultProps = {
-    title: 'Welcome To Basta',
+    title: 'Basta-Bag',
     description: 'We sell the best products for cheap',
     keywords: 'electronics, buy electronics, cheap electroincs',
 }
